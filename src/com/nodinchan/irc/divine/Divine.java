@@ -65,10 +65,20 @@ public class Divine {
 		}
 	}
 	
+	public static String getChannel() {
+		return read.split(" ")[2];
+	}
+	
 	// Returns the line of chat
 	
 	public static String getRead() {
 		return read;
+	}
+	
+	// Returns the sender of the line
+	
+	public static String getSender() {
+		return read.split("!")[0].substring(1);
 	}
 	
 	// Returns the server
@@ -115,7 +125,7 @@ public class Divine {
 				// Called when someone is killed?
 					
 				case KILL:
-					writer.writeBytes("PRIVMSG " + read.split(" ")[2] + " :RIP " + read.split("!")[0] + "\n");
+					writer.writeBytes("PRIVMSG " + getChannel() + " :RIP " + read.split("!")[0] + "\n");
 					break;
 					
 				// Called when invited
@@ -131,19 +141,19 @@ public class Divine {
 				// Called when someone quits
 					
 				case QUIT:
-					writer.writeBytes("PRIVMSG " + read.split(" ")[2] + " :Nice seeing you, " + read.split("!")[0].substring(1) + "!\n");
+					writer.writeBytes("PRIVMSG " + getChannel() + " :Nice seeing you, " + getSender() + "!\n");
 					break;
 					
 				// Called when someone parts
 					
 				case PART:
-					writer.writeBytes("PRIVMSG " + read.split(" ")[2] + " :Nice seeing you, " + read.split("!")[0].substring(1) + "!\n");
+					writer.writeBytes("PRIVMSG " + getChannel() + " :Nice seeing you, " + getSender() + "!\n");
 					break;
 					
 				// Called when someone is kicked
 					
 				case KICK:
-					writer.writeBytes("PRIVMSG " + read.split(" ")[2] + " :Hasta la vista, " + read.split(" ")[3] + "! Mwuahahahahaha!\n");
+					writer.writeBytes("PRIVMSG " + getChannel() + " :Hasta la vista, " + read.split(" ")[3] + "! Mwuahahahahaha!\n");
 					break;
 				}
 			}
@@ -154,10 +164,10 @@ public class Divine {
 	
 	public static void onJoin() throws IOException {
 		if (read.startsWith(":Divine!")) {
-			writer.writeBytes("PRIVMSG " + read.split(" ")[2] + " :Hi guys!\n");
+			writer.writeBytes("PRIVMSG " + getChannel() + " :Hi guys!\n");
 			
 		} else {
-			writer.writeBytes("PRIVMSG " + read.split(" ")[2] + " :Welcome to " + read.split(" ")[2] + ", " + read.split("!")[0].substring(1) + "!\n");
+			writer.writeBytes("PRIVMSG " + getChannel() + " :Welcome to " + getChannel() + ", " + getSender() + "!\n");
 			
 		}
 	}

@@ -19,35 +19,35 @@ public class Chat {
 	}
 	
 	public void onPhrase() throws IOException {
-		sentence = read.replace(read.split(" ")[0], "").replace(read.split(" ")[1], "").replace(read.split(" ")[2], "");
+		sentence = read.replace(read.split(" ")[0], "").replace(read.split(" ")[1], "").replace(Divine.getChannel(), "");
+		
+		new Game().onGames();
 		
 		if (sentence.toLowerCase().contains("divine")) {
 			if (sentence.toLowerCase().contains("thank")) {
-			writer.writeBytes("PRIVMSG " + read.split(" ")[2] + " :You're welcome, " + read.split("!")[0].substring(1) + "\n");
+			writer.writeBytes("PRIVMSG " + Divine.getChannel() + " :You're welcome, " + Divine.getSender() + "\n");
 			
 			}
 			
 			if (sentence.toLowerCase().contains("hi") || sentence.toLowerCase().contains("hello") || sentence.toLowerCase().contains("hey")) {
-				writer.writeBytes("PRIVMSG " + read.split(" ")[2] + " :Howdy, " + read.split("!")[0].substring(1) + "\n");
+				writer.writeBytes("PRIVMSG " + Divine.getChannel() + " :Howdy, " + Divine.getSender() + "\n");
 				
 			}
 			
 			if (sentence.toLowerCase().contains("slaps")) {
-				writer.writeBytes("PRIVMSG " + read.split(" ")[2] + " :\001ACTION slaps " + read.split("!")[0].substring(1) + " with double rainbows all the way\001\n");
-				writer.writeBytes("PRIVMSG " + read.split(" ")[2] + " :Revenge feels good.\n");
+				writer.writeBytes("PRIVMSG " + Divine.getChannel() + " :\001ACTION slaps " + Divine.getSender() + " with double rainbows all the way\001\n");
+				writer.writeBytes("PRIVMSG " + Divine.getChannel() + " :Revenge feels good.\n");
 				
 			}
 			
 			if (sentence.toLowerCase().contains("return")) {
 				if (read.startsWith(":NodinChan!") || read.startsWith(":Nodin!") || read.startsWith(":NinjaChan!") || read.startsWith(":NoodleChan!") || read.startsWith(":DivineHero!") || read.split(" ")[4].contains("NCSC")) {
-					writer.writeBytes("PRIVMSG " + read.split(" ")[2] + " :\001ACTION returns into NodinChan's Pokeball\001\n");
+					writer.writeBytes("PRIVMSG " + Divine.getChannel() + " :\001ACTION returns into NodinChan's Pokeball\001\n");
 				} else {
-					writer.writeBytes("PRIVMSG " + read.split(" ")[2] + " :You are not my master!\n");
-					writer.writeBytes("PRIVMSG " + read.split(" ")[2] + " :\001ACTION uses Thunderbolt on " + read.split("!")[0].substring(1) + " with double rainbows all the way.\001\n");
+					writer.writeBytes("PRIVMSG " + Divine.getChannel() + " :You are not my master!\n");
+					writer.writeBytes("PRIVMSG " + Divine.getChannel() + " :\001ACTION uses Thunderbolt on " + Divine.getSender() + " with double rainbows all the way.\001\n");
 				}
 			}
-		} else {
-			new Game().onGames();
 		}
 	}
 	
@@ -62,14 +62,14 @@ public class Chat {
 				new BotCommands().commandJoin();
 				
 			} else {
-				writer.writeBytes("NOTICE " + read.split("!")[0].substring(1) + " :Please include a channel name\n");
+				writer.writeBytes("NOTICE " + Divine.getSender() + " :Please include a channel name\n");
 				
 			}
 		} else if (command.contains(":!part")) {
 				new BotCommands().commandPart();
 				
 		} else if (command.contains(":!say")) {
-			String args = read.replace(read.split(" ")[0], "").replace(read.split(" ")[1], "").replace(read.split(" ")[2], "").replace(read.split(" ")[3], "").substring(4);
+			String args = read.replace(read.split(" ")[0], "").replace(read.split(" ")[1], "").replace(Divine.getChannel(), "").replace(read.split(" ")[3], "").substring(4);
 			if (!read.endsWith(":!say") || args.length() != 0) {
 				new BotCommands().commandSay();
 				
