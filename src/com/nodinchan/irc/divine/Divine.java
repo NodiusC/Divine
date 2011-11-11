@@ -6,7 +6,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.Socket;
 
-import com.nodinchan.irc.divine.general.Chat;
+import com.nodinchan.irc.divine.chat.Chat;
 
 /** Divine 0.4
  * Copyright (C) 2011  Nodin 'NodinChan' Chan <nodinchan@nodinchan.net>
@@ -27,6 +27,7 @@ import com.nodinchan.irc.divine.general.Chat;
 public class Divine {
 	
 	private static Socket clientSocket;
+	
 	public static DataOutputStream writer;
 	private static BufferedReader reader;
 	
@@ -64,6 +65,8 @@ public class Divine {
 			}
 		}
 	}
+	
+	// Returns the channel of the line
 	
 	public static String getChannel() {
 		return read.split(" ")[2];
@@ -176,11 +179,13 @@ public class Divine {
 	
 	public static void onChat() throws IOException {
 		if (read.split(" ")[3].contains(":!")) {
-			new Chat().onPrivMsg();
+			new Chat().onBotCommand();
+			
+		} else if (read.replace(read.split("!")[0], "").substring(1).toLowerCase().contains("divine")) {
+			new Chat().onDivine();
 			
 		} else {
-			new Chat().onPhrase();
-			
+			new Chat().onMisc();
 		}
 	}
 	

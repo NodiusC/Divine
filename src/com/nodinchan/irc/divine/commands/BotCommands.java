@@ -16,6 +16,14 @@ public class BotCommands {
 		this.writer = Divine.getWriter();
 	}
 	
+	// Bot Command for bringing up the Control Panel
+	
+	public void commandControlPanel() throws IOException {
+		if (read.startsWith(":NodinChan!") || read.startsWith(":Nodin!") || read.startsWith(":NinjaChan!") || read.startsWith(":NoodleChan!") || read.startsWith(":DivineHero!") || read.split(" ")[4].contains("NCSC")) {
+			writer.writeBytes("PRIVMSG " + Divine.getSender() + " :- Control Panel Initiated -\n");
+		}
+	}
+	
 	// Bot Command about Divine
 	
 	public void commandDivine() throws IOException {
@@ -31,6 +39,19 @@ public class BotCommands {
 		} else {
 			writer.writeBytes("JOIN #" + read.split(" ")[4] + "\n");
 			
+		}
+	}
+	
+	// Bot Command for bot to do action
+	
+	public void commandAction() throws IOException {
+		if (read.split(" ")[4].startsWith("#")) {
+			if (read.startsWith(":NodinChan!") || read.startsWith(":Nodin!") || read.startsWith(":NinjaChan!") || read.startsWith(":NoodleChan!") || read.startsWith(":DivineHero!") || read.split(" ")[4].contains("NCSC")) {
+				String sentence = read.replace(read.split(" ")[0], "").replace(read.split(" ")[1], "").replace(read.split(" ")[2], "").replace(read.split(" ")[3], "").replace(read.split(" ")[4], "");
+				writer.writeBytes("PRIVMSG " + read.split(" ")[4] + " :\001ACTION " + sentence.substring(5) + "\001\n");
+			}
+		} else {
+			writer.writeBytes("NOTICE " + Divine.getSender() + " :Please include a channel name\n");
 		}
 	}
 	
