@@ -40,22 +40,23 @@ public class Misc {
 			if (sentence.substring(4).toLowerCase().startsWith("knock knock")) {
 				writer.writeBytes("PRIVMSG " + Divine.getChannel() + " :Who's there?\n");
 				
-				knockknock.add(read.split("!")[0].substring(1));
+				knockknock.add(read.split("!")[0]);
 				
-			} else if (knockknock.contains(read.split("!")[0].substring(1))) {
+			} else if (knockknock.contains(read.split("!")[0])) {
 				writer.writeBytes("PRIVMSG " + Divine.getChannel() + " :" + sentence.substring(4) + " who?\n");
 				
-				knockknock.remove(read.split("!")[0].substring(1));
-				knock.add(read.split("!")[0].substring(1));
+				knock.add(read.split("!")[0]);
 				
-			} else if (knock.contains(read.split("!")[0].substring(1))) {
+				if (knock.contains(read.split("!")[0])) {
+					knockknock.remove(read.split("!")[0].substring(1));
+				}
+				
+			} else if (knock.contains(read.split("!")[0])) {
 				writer.writeBytes("PRIVMSG " + Divine.getChannel() + " :\001ACTION knocks on " + sentence.substring(4) + "'s head.\001\n");
 				
-				knock.remove(read.split("!")[0].substring(1));
+				knock.remove(read.split("!")[0]);
 				
-			} else {
-				writer.writeBytes("PRIVMSG " + Divine.getChannel() + " :Error - Knock Knock Game Broke\n");
-			}	
+			}
 		}
 	}
 }

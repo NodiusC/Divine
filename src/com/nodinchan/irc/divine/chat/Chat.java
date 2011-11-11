@@ -55,7 +55,10 @@ public class Chat {
 	public void onBotCommand() throws IOException {
 		String command = read.split(" ")[3].toLowerCase();
 		
-		if (command.contains(":!controlpanel") || command.contains(":!cp")) {
+		if (command.contains(":!test")) {
+			writer.writeBytes("PRIVMSG " + Divine.getChannel() + " :" + read + "\n");
+			
+		} else if (command.contains(":!controlpanel") || command.contains(":!cp")) {
 			new BotCommands().commandControlPanel();
 			
 		} else if (command.contains(":!divine")) {
