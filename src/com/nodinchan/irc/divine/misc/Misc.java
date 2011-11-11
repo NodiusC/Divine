@@ -18,47 +18,44 @@ public class Misc {
 		this.read = Divine.getRead();
 	}
 	
+	public void onGames() throws IOException {
+		new KnockKnock().onGame();
+	}
+	
 	// Knock Knock Game
 	
-	public void gameKnockKnock() throws IOException {
+	public class KnockKnock {
+		
 		List<String> knockknock = new LinkedList<String>();
 		List<String> knock = new LinkedList<String>();
 		
-		String sentence = read.replace(read.split(" ")[0], "").replace(read.split(" ")[1], "").replace(read.split(" ")[2], "");
-		
-		// Say "Who's there?" when "knock knock" is mentioned
-		
-		if (sentence.substring(4).toLowerCase().startsWith("knock knock")) {
-			writer.writeBytes("PRIVMSG " + Divine.getChannel() + " :Who's there?\n");
-			
-			// Adds the person to the list for continuation of Knock Knock
-			
-			knockknock.add(read.split("!")[0].substring(1));
-			return;
-		}
-		
-		// If the list contains the nickname of the person, respond accordingly
-		
-		if (knockknock.contains(read.split("!")[0].substring(1))) {
-			writer.writeBytes("PRIVMSG " + Divine.getChannel() + " :" + sentence.substring(4) + " who?\n");
-			
-			// Removes the person from the list and adds the nick to a new one
-			
-			knockknock.remove(read.split("!")[0].substring(1));
-			knock.add(read.split("!")[0].substring(1));
-			return;
+		public KnockKnock() {
 			
 		}
 		
-		// If the new list contains the nickname of the person, respond accordingly
-		
-		if (knock.contains(read.split("!")[0].substring(1))) {
-			writer.writeBytes("PRIVMSG " + Divine.getChannel() + " :\001ACTION knocks on " + sentence.substring(4) + "'s head.\001\n");
+		public void onGame() throws IOException {
 			
-			// Game ended
+			String sentence = read.replace(read.split(" ")[0], "").replace(read.split(" ")[1], "").replace(read.split(" ")[2], "");
 			
-			knock.remove(read.split("!")[0].substring(1));
-			return;
-		}		
+			if (sentence.substring(4).toLowerCase().startsWith("knock knock")) {
+				writer.writeBytes("PRIVMSG " + Divine.getChannel() + " :Who's there?\n");
+				
+				knockknock.add(read.split("!")[0].substring(1));
+				
+			} else if (knockknock.contains(read.split("!")[0].substring(1))) {
+				writer.writeBytes("PRIVMSG " + Divine.getChannel() + " :" + sentence.substring(4) + " who?\n");
+				
+				knockknock.remove(read.split("!")[0].substring(1));
+				knock.add(read.split("!")[0].substring(1));
+				
+			} else if (knock.contains(read.split("!")[0].substring(1))) {
+				writer.writeBytes("PRIVMSG " + Divine.getChannel() + " :\001ACTION knocks on " + sentence.substring(4) + "'s head.\001\n");
+				
+				knock.remove(read.split("!")[0].substring(1));
+				
+			} else {
+				writer.writeBytes("PRIVMSG " + Divine.getChannel() + " :Error - Knock Knock Game Broke\n");
+			}	
+		}
 	}
 }

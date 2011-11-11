@@ -98,6 +98,6 @@ public class Chat {
 	// Called whenever there is chat
 	
 	public void onMisc() throws IOException {
-		new Misc().gameKnockKnock();
+		new Misc().onGames();
 	}
 }
