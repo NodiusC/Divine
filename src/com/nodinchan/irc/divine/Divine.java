@@ -40,7 +40,7 @@ public class Divine {
 		writer = new DataOutputStream(getSocket().getOutputStream());
 		reader = new BufferedReader(new InputStreamReader(getSocket().getInputStream()));
 		
-		writer.writeBytes("USER NC-Bot 0 * :Divine Ver. 0.4\n");
+		writer.writeBytes("USER NC-Bot 0 * :Divine Ver. 0.5\n");
 		writer.writeBytes("NICK Divine\n");
 		
 		Boolean nickserv = true;
@@ -64,6 +64,12 @@ public class Divine {
 				onCommand();
 			}
 		}
+	}
+	
+	// When the person is not supposed to be allowed to use the command
+	
+	public static void accessDenied() throws IOException {
+		writer.writeBytes("NOTICE " + Divine.getSender() + " :You do not have permission\n");
 	}
 	
 	// Returns the channel of the line
@@ -163,6 +169,21 @@ public class Divine {
 		}
 	}
 	
+	// Responses to chat
+	
+	public static void onChat() throws IOException {
+		if (read.split(" ")[3].contains(":!")) {
+			new Chat().onBotCommand();
+			
+		} else {
+			new Chat().onReply();
+			
+			new Chat().onDivine();
+			
+			new Chat().onMisc();
+		}
+	}
+	
 	// Responses to joining
 	
 	public static void onJoin() throws IOException {
@@ -170,22 +191,8 @@ public class Divine {
 			writer.writeBytes("PRIVMSG " + getChannel() + " :Hi guys!\n");
 			
 		} else {
-			writer.writeBytes("PRIVMSG " + getChannel() + " :Welcome to " + getChannel() + ", " + getSender() + "!\n");
+			writer.writeBytes("NOTICE " + getSender() + " :Welcome to " + getChannel() + ", " + getSender() + "!\n");
 			
-		}
-	}
-	
-	// Responses to chat
-	
-	public static void onChat() throws IOException {
-		if (read.split(" ")[3].contains(":!")) {
-			new Chat().onBotCommand();
-			
-		} else if (read.replace(read.split("!")[0], "").substring(1).toLowerCase().contains("divine")) {
-			new Chat().onDivine();
-			
-		} else {
-			new Chat().onMisc();
 		}
 	}
 	
@@ -201,5 +208,16 @@ public class Divine {
 		QUIT,
 		PART,
 		KICK,
+	}
+	
+	// People who have full access
+	
+	public enum FullAccess {
+		NODINCHAN,
+		NODIN,
+		NCSC,
+		NINJACHAN,
+		DIVINEHERO,
+		NOODLECHAN,
 	}
 }
